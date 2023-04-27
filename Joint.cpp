@@ -5,9 +5,7 @@
 #include "Joint.h"
 
 
-Joint::Joint(int pin, String name, int defAngle, int limitUp, int limitDown) {
-    _pin = pin;
-    _name = name;
+Joint::Joint(int pin, String name, int defAngle, int limitUp, int limitDown): Module(pin, name) {
     _angle = defAngle;
     _defAngle = defAngle;
     _limitUp = limitUp;
@@ -43,4 +41,8 @@ bool Joint::setLimitUp(int limit) {
     }
     _limitUp = limit;
     return true;
+}
+
+int Joint::getAngle() {
+    return _angle;
 }
