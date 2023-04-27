@@ -5,4 +5,8 @@
 #ifndef MODBOT_LIBRARY_COMMS_H
 #define MODBOT_LIBRARY_COMMS_H
 
+#include "Module.h"
+
+class Comms
+
 #endif //MODBOT_LIBRARY_COMMS_H
