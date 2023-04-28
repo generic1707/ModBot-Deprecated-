@@ -20,9 +20,9 @@ public:
 protected:
     int _busyPin;
     int _volume;
-    //kód požičaný z repo https://github.com/Fablab-Slovakia/mokrarosa/blob/master/src/arduino/12_mp3_player/12_mp3_player.ino
-    void sendPacket();
-    void sendByte();
+    //kód požičaný a upravený z repo https://github.com/Fablab-Slovakia/mokrarosa/blob/master/src/arduino/12_mp3_player/12_mp3_player.ino
+    void sendPacket(uint8_t cmd, uint16_t param);
+    void sendByte(uint8_t val);
 };
 
 

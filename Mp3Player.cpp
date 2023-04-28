@@ -18,6 +18,7 @@ bool Mp3Player::setVolume(int volume) {
         return false;
     }
     _volume = volume;
+    sendPacket(0x06);
     return false;
 }
 
@@ -25,12 +26,12 @@ bool Mp3Player::isPlaying() {
     return (bool)digitalRead(_busyPin);
 }
 
-void Mp3Player::play(int trackNum) {
-    //TODO
+void Mp3Player::play(uint8_t trackNum) {
+    sendPacket(0x03, trackNum);
 }
 
 void Mp3Player::stop() {
-    //TODO
+    sendPacket(0x0E);
 }
 
 bool Mp3Player::incVol() {
@@ -38,6 +39,7 @@ bool Mp3Player::incVol() {
         return false;
     }
     _volume++;
+    sendPacket(0x04);
     return true;
 }
 
@@ -46,5 +48,53 @@ bool Mp3Player::decVol() {
         return false;
     }
     _volume--;
+    sendPacket(0x05);
     return true;
+}
+
+void Mp3Player::sendByte(uint8_t val) {
+    pinMode(_pin, OUTPUT);
+    float start_transmission = micros();
+    float one_bit = 1000000 / 9600.0;
+    float next_change = start_transmission + one_bit;
+    digitalWrite(_pin, LOW);
+    while (micros() < next_change);
+
+    for (int i = 2; i < 10; i++)
+    {
+        if (val & 1) digitalWrite(_pin, HIGH);
+        else digitalWrite(_pin, LOW);
+        next_change = start_transmission + one_bit * i;
+        val >>= 1;
+        while (micros() < next_change);
+    }
+
+    digitalWrite(_pin, HIGH);
+    next_change = micros() + 2 * one_bit;
+    while (micros() < next_change);
+    pinMode(_pin, INPUT);
+}
+
+void Mp3Player::sendPacket(uint8_t cmd, uint16_t param = -1) {
+    mp3_send_byte(0x7E);
+    mp3_send_byte(0xFF);
+    uint16_t chksm = 0x00
+    if (param < 0){
+        mp3_send_byte(0x04);
+        mp3_send_byte(cmd);
+        mp3_send_byte(0x00);
+        chksm = 0xFF + 0x04 + cmd;
+    }else{
+        mp3_send_byte(0x06);
+        mp3_send_byte(cmd);
+        mp3_send_byte(0x00);
+        mp3_send_byte((uint8_t)(param >> 8));
+        mp3_send_byte((uint8_t)(param & 0xFF));
+        chksm = 0xFF + 0x06 + cmd + (param >> 8) + (param & 0xFF);
+    }
+
+    chksm = -chksm;
+    mp3_send_byte((uint8_t)(chksm >> 8));
+    mp3_send_byte((uint8_t)(chksm & 0xFF));
+    mp3_send_byte(0xEF);
 }
