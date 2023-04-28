@@ -16,6 +16,7 @@ public:
     void setDefAngle(int angle);
     bool setLimitUp(int limit);
     bool setLimitDown(int limit);
+    int getAngle();
 
 protected:
     Servo _servo;
