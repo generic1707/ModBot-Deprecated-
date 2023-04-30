@@ -27,12 +27,16 @@ void loop() {
 
 }
 
-void pickUp(){
+bool pickUp(){
   lowerJoint.rotate(90)
   upperJoint.rotate(90)
 }
 
-void putDown(){
+bool putDown(){
   //rotate
   //release
+}
+
+bool smthng(int x){
+  
 }

@@ -10,14 +10,34 @@
 
 class Comms: public Module{
 public:
-    Comms(int sampleRate, int clocFreq);
+    Comms(int sampleRate, int clocFreq, int maxCommands);
     void serialListen();
     void i2cListen();
     void i2cWrite(int byte);
     void serialWrite(String text);
     void setSampleRate();
     void setClockFreq();
+    void addCommand(command cmd);
 
+protected:
+    command _commands*;
+    int _cmdNum;
+    int _sampleRate;
+    int _clockFreq;
+
+private:
+    void growArray();
+    int findCmd(String cmd);
+    int _maxCommands;
+};
+
+struct command {
+    String name;
+    int type;
+    bool (*cmd1)();
+    int (*cmd2)();
+    bool (*cmd3)(int);
+    int (*cmd4)(int);
 };
 
 #endif //MODBOT_LIBRARY_COMMS_H

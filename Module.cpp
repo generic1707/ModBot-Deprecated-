@@ -5,19 +5,11 @@
 #include "Arduino.h"
 #include "Module.h"
 
-Module::Module(int pin, String name) {
+Module::Module(int pin) {
     _pin = pin;
     _name = name;
 }
 
 int Module::getPin() {
     return _pin
-}
-
-String Module::getName() {
-    return _name
-}
-
-void Module::setName(String name) {
-    _name = name;
 }

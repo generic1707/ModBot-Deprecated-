@@ -10,14 +10,11 @@
 class Module
 {
 public:
-    Module(int pin, String name);
+    Module(int pin);
     int getPin();
-    String getName();
-    void setName(String name);
 
 protected:
     int _pin;
-    String _name;
 };
 
 #endif //MODBOT_LIBRARY_MODULES_H
