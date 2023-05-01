@@ -5,13 +5,13 @@
 #ifndef MODBOT_LIBRARY_ARM_H
 #define MODBOT_LIBRARY_ARM_H
 
+#include "Arduino.h"
 #include "Module.h"
 #include "Joint.h"
-#include "Arduino.h"
 
 class Arm: public Module{
 public:
-    Arm(String name, int pin1, int pin2, int len1, int len2);
+    Arm(int pin1, int pin2, int len1, int len2);
     Arm(Joint* j1, Joint* j2, int len1, int len2);
     int rotate(int j, int angle);
     int moveToXZ(int x, int z);

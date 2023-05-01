@@ -5,6 +5,7 @@
 #ifndef MODBOT_TOUCH_H
 #define MODBOT_TOUCH_H
 
+#include "Arduino.h"
 #include "Module.h"
 
 class Touch: public Module {

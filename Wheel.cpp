@@ -4,7 +4,7 @@
 
 #include "Wheel.h"
 
-Wheel::Wheel(int pin, String name, int limit):Module(pin, name) {
+Wheel::Wheel(int pin, int limit):Module(pin) {
     _limit = limit;
 }
 

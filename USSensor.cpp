@@ -2,6 +2,7 @@
 // Created by misko on 27. 4. 2023.
 //
 
+#include  "Arduino.h"
 #include "USSensor.h"
 
 USSensor::USSensor(int pinIn, int pinOut, int echo): Module(pinIn) {

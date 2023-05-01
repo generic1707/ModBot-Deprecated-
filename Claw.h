@@ -11,7 +11,7 @@
 
 class Claw: public Module{
 public:
-    Claw(int pin, String name);
+    Claw(int pin);
     void open();
     void close();
 

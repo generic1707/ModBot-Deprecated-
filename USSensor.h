@@ -5,6 +5,7 @@
 #ifndef MODBOT_USSENSOR_H
 #define MODBOT_USSENSOR_H
 
+#include  "Arduino.h"
 #include "Module.h"
 
 class USSensor: public Module {

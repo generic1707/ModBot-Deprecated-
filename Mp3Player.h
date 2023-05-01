@@ -5,6 +5,7 @@
 #ifndef MODBOT_MP3PLAYER_H
 #define MODBOT_MP3PLAYER_H
 
+#include "Arduino.h"
 #include "Module.h"
 
 class Mp3Player: public Module {

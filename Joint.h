@@ -11,7 +11,7 @@
 
 class Joint: public Module{
 public:
-    Joint(int pin, String name, int defAngle = 90, int limitUp = 180, int limitDown = 0);
+    Joint(int pin, int defAngle = 90, int limitUp = 180, int limitDown = 0);
     bool rotate(int angle);
     void setDefAngle(int angle);
     bool setLimitUp(int limit);

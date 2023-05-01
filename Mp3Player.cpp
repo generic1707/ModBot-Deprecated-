@@ -2,6 +2,7 @@
 // Created by misko on 27. 4. 2023.
 //
 
+#include  "Arduino.h"
 #include "Mp3Player.h"
 
 Mp3Player::Mp3Player(int serialPin, int busyPin, int volume = 8): Module(serialPin, "") {

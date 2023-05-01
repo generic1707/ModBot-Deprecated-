@@ -7,7 +7,6 @@
 
 Module::Module(int pin) {
     _pin = pin;
-    _name = name;
 }
 
 int Module::getPin() {

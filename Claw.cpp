@@ -4,7 +4,7 @@
 
 #include "Claw.h"
 
-Claw::Claw(int pin, int name):Module(pin, name) {
+Claw::Claw(int pin):Module(pin) {
     _servo.attach(pin)
 }
 

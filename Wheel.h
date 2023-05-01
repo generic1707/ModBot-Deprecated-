@@ -11,7 +11,7 @@
 
 class Wheel: public Module{
 public:
-    Wheel(int pin, String name, int limit = 90);
+    Wheel(int pin, int limit = 90);
     bool setSpeed(int speed);
     bool setLimit(int limit);
 
