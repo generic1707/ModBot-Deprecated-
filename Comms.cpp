@@ -86,13 +86,28 @@ void Comms::setClockFreq(int cf) {
 
 void Comms::addCommand(command cmd) {
     if (_cmdNum == _maxCommands){
-        command newCmd* = new command[2*_maxCommands];
-        _maxCommands = 2*_maxCommands;
-        for (int i = 0; i < _cmdNum; i++){
-            newCmd[i] = _commands[i];
-        }
-        _commands = &newCmd;
+        growArray();
     }
     _commands[_cmdNum + 1] = cmd;
     _cmdNum++;
 }
+
+void Comms::growArray() {
+    command newCmd* = new command[2*_maxCommands];
+    _maxCommands = 2*_maxCommands;
+    for (int i = 0; i < _cmdNum; i++){
+        newCmd[i] = _commands[i];
+    }
+    _commands = &newCmd;
+}
+
+int Comms::findCmd(String cmd) {
+    for (int i = 0; i < _cmdNum; i++){
+        if (cmd == _commands[i].name){
+            return i;
+        }
+    }
+    return -1;
+}
+
+
