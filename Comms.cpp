@@ -49,8 +49,8 @@ void Comms::serialListen() {
                     }
                     break;
                 case 5:
-                    int arg = Serial.parseInt();
-                    int arg2 = Serial.parseInt();
+                    float arg = Serial.parseFloat();
+                    float arg2 = Serial.parseFloat();
                     if (Serial.read() == '\n'){
                         _commands[cmdI].cmd5(arg, arg2);
                     }

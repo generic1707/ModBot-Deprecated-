@@ -37,7 +37,7 @@ int Arm::rotate(int j, int angle) {
     return 1
 }
 
-int Arm::moveToXZ(int x, int z) {
-    //TBI
+int Arm::moveToXZ(float x, float z) {
+    while 
 }
 

@@ -14,7 +14,7 @@ public:
     Arm(int pin1, int pin2, int len1, int len2);
     Arm(Joint* j1, Joint* j2, int len1, int len2);
     int rotate(int j, int angle);
-    int moveToXZ(int x, int z);
+    int moveToXZ(float x, float z);
 
 protected:
     Joint* _j1;

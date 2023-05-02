@@ -38,7 +38,7 @@ struct command {
     int (*cmd2)();
     bool (*cmd3)(int);
     int (*cmd4)(int);
-    int (*cmd5)(int, int);
+    int (*cmd5)(float, float);
 };
 
 #endif //MODBOT_LIBRARY_COMMS_H
