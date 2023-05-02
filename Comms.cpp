@@ -4,19 +4,21 @@
 
 #include "Arduino.h"
 #include "Comms.h"
+#include <Wire.h>
 
 Comms::Comms(int sampleRate, int clocFreq, int maxCommands):Module(0) {
     _sampleRate = sampleRate;
     _clockFreq = clocFreq;
     _maxCommands = maxCommands;
     _cmdNum = 0;
-    command cmd[] = new command[maxCommands];
-    _commands = cmd;
+    _commands = new command[maxCommands];
+    Serial.begin(sampleRate);
 }
 
 void Comms::serialListen() {
     while (Serial.available() > 0){
         String cmd = Serial.readStringUntil(" ");
+        Serial.println(cmd);
         int cmdI = findCmd(cmd);
         if (cmdI == -1){
             serialWrite(cmd+" is not a command. /help for list of commands.");
@@ -25,6 +27,7 @@ void Comms::serialListen() {
                 char ch = Serial.read();
             }
         }else{
+            int arg = 0;
             switch (_commands[cmdI].type){
                 case 1:
                     if (Serial.read() == '\n'){
@@ -37,20 +40,20 @@ void Comms::serialListen() {
                     }
                     break;
                 case 3:
-                    int arg = Serial.parseInt();
+                    arg = Serial.parseInt();
                     if (Serial.read() == '\n'){
                         _commands[cmdI].cmd3(arg);
                     }
                     break;
                 case 4:
-                    int arg = Serial.parseInt();
+                    arg = Serial.parseInt();
                     if (Serial.read() == '\n'){
                         _commands[cmdI].cmd4(arg);
                     }
                     break;
                 case 5:
-                    float arg = Serial.parseFloat();
                     float arg2 = Serial.parseFloat();
+                    float arg3 = Serial.parseFloat();
                     if (Serial.read() == '\n'){
                         _commands[cmdI].cmd5(arg, arg2);
                     }
@@ -93,12 +96,12 @@ void Comms::addCommand(command cmd) {
 }
 
 void Comms::growArray() {
-    command newCmd* = new command[2*_maxCommands];
+    command* newCmd = new command[2*_maxCommands];
     _maxCommands = 2*_maxCommands;
     for (int i = 0; i < _cmdNum; i++){
         newCmd[i] = _commands[i];
     }
-    _commands = &newCmd;
+    _commands = newCmd;
 }
 
 int Comms::findCmd(String cmd) {

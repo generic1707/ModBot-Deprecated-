@@ -5,7 +5,7 @@
 #include  "Arduino.h"
 #include "Mp3Player.h"
 
-Mp3Player::Mp3Player(int serialPin, int busyPin, int volume = 8): Module(serialPin, "") {
+Mp3Player::Mp3Player(int serialPin, int busyPin, int volume = 8): Module(serialPin) {
     _busyPin = busyPin;
     _volume = volume;
 }
@@ -63,8 +63,11 @@ void Mp3Player::sendByte(uint8_t val) {
 
     for (int i = 2; i < 10; i++)
     {
-        if (val & 1) digitalWrite(_pin, HIGH);
-        else digitalWrite(_pin, LOW);
+        if (val & 1) {
+            digitalWrite(_pin, HIGH);
+        }else {
+            digitalWrite(_pin, LOW);
+        }
         next_change = start_transmission + one_bit * i;
         val >>= 1;
         while (micros() < next_change);
@@ -76,26 +79,26 @@ void Mp3Player::sendByte(uint8_t val) {
     pinMode(_pin, INPUT);
 }
 
-void Mp3Player::sendPacket(uint8_t cmd, uint16_t param = -1) {
-    mp3_send_byte(0x7E);
-    mp3_send_byte(0xFF);
-    uint16_t chksm = 0x00
+void Mp3Player::sendPacket(uint8_t cmd, uint16_t param) {
+    sendByte(0x7E);
+    sendByte(0xFF);
+    uint16_t chksm = 0x00;
     if (param < 0){
-        mp3_send_byte(0x04);
-        mp3_send_byte(cmd);
-        mp3_send_byte(0x00);
+        sendByte(0x04);
+        sendByte(cmd);
+        sendByte(0x00);
         chksm = 0xFF + 0x04 + cmd;
     }else{
-        mp3_send_byte(0x06);
-        mp3_send_byte(cmd);
-        mp3_send_byte(0x00);
-        mp3_send_byte((uint8_t)(param >> 8));
-        mp3_send_byte((uint8_t)(param & 0xFF));
+        sendByte(0x06);
+        sendByte(cmd);
+        sendByte(0x00);
+        sendByte((uint8_t)(param >> 8));
+        sendByte((uint8_t)(param & 0xFF));
         chksm = 0xFF + 0x06 + cmd + (param >> 8) + (param & 0xFF);
     }
 
     chksm = -chksm;
-    mp3_send_byte((uint8_t)(chksm >> 8));
-    mp3_send_byte((uint8_t)(chksm & 0xFF));
-    mp3_send_byte(0xEF);
+    sendByte((uint8_t)(chksm >> 8));
+    sendByte((uint8_t)(chksm & 0xFF));
+    sendByte(0xEF);
 }

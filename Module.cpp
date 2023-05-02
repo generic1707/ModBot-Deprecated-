@@ -10,5 +10,5 @@ Module::Module(int pin) {
 }
 
 int Module::getPin() {
-    return _pin
+    return _pin;
 }

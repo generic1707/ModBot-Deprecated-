@@ -5,17 +5,17 @@
 #include  "Arduino.h"
 #include "Touch.h"
 
-Touch::Touch(int pin, bool inverse): Module(pin,"") {
+Touch::Touch(int pin, bool inverse): Module(pin) {
     _inverse = inverse;
 }
 
 bool Touch::isTouched() {
     if (digitalRead(_pin) == HIGH){
-        return !_inverse
+        return !_inverse;
     }
-    return _inverse
+    return _inverse;
 }
 
 void Touch::invert() {
-    _inverse = !_inverse
+    _inverse = !_inverse;
 }

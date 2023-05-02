@@ -9,7 +9,7 @@ Wheel::Wheel(int pin, int limit):Module(pin) {
 }
 
 bool Wheel::setSpeed(int speed) {
-    if (abs(speed) > limit){
+    if (abs(speed) > _limit){
         return false;
     }
     _servo.write(speed);

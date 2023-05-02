@@ -5,13 +5,13 @@
 #include "Claw.h"
 
 Claw::Claw(int pin):Module(pin) {
-    _servo.attach(pin)
+    _servo.attach(pin);
 }
 
 void Claw::open() {
-    _servo.write(60)
+    _servo.write(60);
 }
 
 void Claw::close() {
-    _servo.write(90)
+    _servo.write(90);
 }

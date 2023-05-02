@@ -7,29 +7,7 @@
 
 #include "arduino.h"
 #include "Module.h"
-
-class Comms: public Module{
-public:
-    Comms(int sampleRate, int clocFreq, int maxCommands);
-    void serialListen();
-    void i2cListen();
-    void i2cWrite(int byte);
-    void serialWrite(String text);
-    void setSampleRate(int sr);
-    void setClockFreq(int cf);
-    void addCommand(command cmd);
-
-protected:
-    command _commands*;
-    int _cmdNum;
-    int _sampleRate;
-    int _clockFreq;
-
-private:
-    void growArray();
-    int findCmd(String cmd);
-    int _maxCommands;
-};
+#include <Wire.h>
 
 struct command {
     String name;
@@ -39,6 +17,29 @@ struct command {
     bool (*cmd3)(int);
     int (*cmd4)(int);
     int (*cmd5)(float, float);
+};
+
+class Comms: public Module{
+public:
+    Comms(int sampleRate = 9600, int clocFreq = 100000, int maxCommands = 2);
+    void serialListen();
+    void i2cListen();
+    void i2cWrite(uint8_t byte);
+    void serialWrite(String text);
+    void setSampleRate(int sr);
+    void setClockFreq(int cf);
+    void addCommand(command cmd);
+
+protected:
+    command* _commands;
+    int _cmdNum;
+    int _sampleRate;
+    int _clockFreq;
+
+private:
+    void growArray();
+    int findCmd(String cmd);
+    int _maxCommands;
 };
 
 #endif //MODBOT_LIBRARY_COMMS_H
