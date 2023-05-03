@@ -10,9 +10,11 @@ Joint::Joint(int pin, int defAngle, int limitUp, int limitDown): Module(pin) {
     _defAngle = defAngle;
     _limitUp = limitUp;
     _limitDown = limitDown;
+}
 
-    _servo.attach(pin);
-    _servo.write(defAngle);
+void Joint::setup() {
+    _servo.attach(_pin);
+    _servo.write(_defAngle);
 }
 
 bool Joint::rotate(int angle) {

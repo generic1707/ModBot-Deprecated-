@@ -13,6 +13,7 @@ class Arm: public Module{
 public:
     Arm(int pin1, int pin2, int len1, int len2);
     Arm(Joint* j1, Joint* j2, int len1, int len2);
+    void setup();
     int rotate(int j, int angle);
     int moveToXZ(float x, float z);
 

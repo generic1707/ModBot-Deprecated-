@@ -22,6 +22,7 @@ struct command {
 class Comms: public Module{
 public:
     Comms(int sampleRate = 9600, int clocFreq = 100000, int maxCommands = 2);
+    void beginSerial();
     void serialListen();
     void i2cListen();
     void i2cWrite(uint8_t byte);
@@ -39,6 +40,7 @@ protected:
 private:
     void growArray();
     int findCmd(String cmd);
+    void serialHelp();
     int _maxCommands;
 };
 

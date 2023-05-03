@@ -12,54 +12,50 @@ Comms::Comms(int sampleRate, int clocFreq, int maxCommands):Module(0) {
     _maxCommands = maxCommands;
     _cmdNum = 0;
     _commands = new command[maxCommands];
-    Serial.begin(sampleRate);
+}
+
+void Comms::beginSerial() {
+    Serial.begin(_sampleRate);
 }
 
 void Comms::serialListen() {
-    while (Serial.available() > 0){
-        String cmd = Serial.readStringUntil(" ");
-        Serial.println(cmd);
-        int cmdI = findCmd(cmd);
-        if (cmdI == -1){
-            serialWrite(cmd+" is not a command. /help for list of commands.");
-            char ch = Serial.read();
-            while (ch != '\n'){
-                char ch = Serial.read();
-            }
-        }else{
-            int arg = 0;
-            switch (_commands[cmdI].type){
-                case 1:
-                    if (Serial.read() == '\n'){
-                        _commands[cmdI].cmd1();
-                    }
-                    break;
-                case 2:
-                    if (Serial.read() == '\n'){
-                        _commands[cmdI].cmd2();
-                    }
-                    break;
-                case 3:
-                    arg = Serial.parseInt();
-                    if (Serial.read() == '\n'){
-                        _commands[cmdI].cmd3(arg);
-                    }
-                    break;
-                case 4:
-                    arg = Serial.parseInt();
-                    if (Serial.read() == '\n'){
-                        _commands[cmdI].cmd4(arg);
-                    }
-                    break;
-                case 5:
-                    float arg2 = Serial.parseFloat();
-                    float arg3 = Serial.parseFloat();
-                    if (Serial.read() == '\n'){
-                        _commands[cmdI].cmd5(arg, arg2);
-                    }
-                    break;
-
-            }
+    if (!Serial) {
+        return;
+    }
+    while (Serial.available() == 0) {}
+    String cmd = Serial.readString();
+    Serial.println(cmd);
+    int cmdI = findCmd(cmd);
+    if (cmdI == -2){
+        serialHelp();
+    }
+    if (cmdI == -1){
+        serialWrite(cmd+" is not a command. 'help' for list of commands.");
+    }else{
+        int arg = 0;
+        float arg2 = 0.0;
+        float arg3 = 0.0;
+        switch (_commands[cmdI].type){
+            case 1:
+                _commands[cmdI].cmd1();
+                break;
+            case 2:
+                _commands[cmdI].cmd2();
+                break;
+            case 3:
+                
+                arg = Serial.parseInt();
+                _commands[cmdI].cmd3(arg);
+                break;
+            case 4:
+                arg = Serial.parseInt();
+                _commands[cmdI].cmd4(arg);
+                break;
+            case 5:
+                arg2 = Serial.parseFloat();
+                arg3 = Serial.parseFloat();
+                _commands[cmdI].cmd5(arg, arg2);
+                break;
         }
     }
 }
@@ -104,13 +100,21 @@ void Comms::growArray() {
     _commands = newCmd;
 }
 
-int Comms::findCmd(String cmd) {
+void Comms::serialHelp() {
     for (int i = 0; i < _cmdNum; i++){
-        if (cmd == _commands[i].name){
+        Serial.println(_commands[i].name);
+    }
+}
+
+int Comms::findCmd(String cmd) {
+    cmd.trim();
+    if (cmd == "help"){
+        return -2;
+    }
+    for (int i = 0; i < _cmdNum; i++){
+        if (cmd.indexOf(_commands[i].name) == 0){
             return i;
         }
     }
     return -1;
 }
-
-

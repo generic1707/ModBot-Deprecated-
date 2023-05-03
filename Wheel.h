@@ -12,6 +12,7 @@
 class Wheel: public Module{
 public:
     Wheel(int pin, int limit = 90);
+    void setup();
     bool setSpeed(int speed);
     bool setLimit(int limit);
 

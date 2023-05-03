@@ -3,9 +3,14 @@
 //
 
 #include "Wheel.h"
+#include <Servo.h>
 
 Wheel::Wheel(int pin, int limit):Module(pin) {
     _limit = limit;
+}
+
+void Wheel::setup() {
+    _servo.attach(_pin);
 }
 
 bool Wheel::setSpeed(int speed) {

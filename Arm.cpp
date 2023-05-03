@@ -7,8 +7,8 @@
 #include "Module.h"
 
 Arm::Arm(int pin1, int pin2, int len1, int len2):Module(0) {
-    Joint j1 = Joint(pin1, "bottom");
-    Joint j2 = Joint(pin2, "top");
+    Joint j1 = Joint(pin1);
+    Joint j2 = Joint(pin2);
     _j1 = &j1;
     _j2 = &j2;
     _len1 = len1;
@@ -20,6 +20,11 @@ Arm::Arm(Joint* j1, Joint* j2, int len1, int len2):Module(0) {
     _j2 = j2;
     _len1 = len1;
     _len2 = len2;
+}
+
+void Arm::setup() {
+    _j1->setup();
+    _j2->setup();
 }
 
 int Arm::rotate(int j, int angle) {

@@ -7,6 +7,7 @@
 
 Touch::Touch(int pin, bool inverse): Module(pin) {
     _inverse = inverse;
+    pinMode(pin, INPUT);
 }
 
 bool Touch::isTouched() {
