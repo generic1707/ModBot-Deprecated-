@@ -9,21 +9,21 @@
 #include <USSensor.h>
 #include <Wheel.h>
 
-Joint lowerJoint = Joint(1);
-Joint upperJoint = Joint(2);
+Joint lowerJoint = Joint(2);
+Joint upperJoint = Joint(3);
 //Arm arm = Arm(&lowerJoint, &upperJoint, 5,5);
-Joint rotation = Joint(3);
-Claw claw = Claw(4);
-Touch touch = Touch(7,false);
-//USSensor distanceSensor = USSensor(6,7);
-Mp3Player player = Mp3Player(8,9,10);
+Joint rotation = Joint(4);
+Claw claw = Claw(5);
+Touch touch = Touch(6,false);
+USSensor distanceSensor = USSensor(7,8);
+Mp3Player player = Mp3Player(9,10,8);
 Comms com = Comms(); // serialListen() i2cListen() setCommand(pointer func, int argc) 
-struct command cmd1;
-struct command cmd2;
-
+//struct command cmd1;
+//struct command cmd2;
+bool oneTime = true;
 
 void setup() {
-  // put your setup code here, to run once:
+  com.beginSerial();
   // cmd1.name = "w";
   // cmd1.cmd1 = pickUp;
   // cmd1.type = 1;
@@ -34,13 +34,25 @@ void setup() {
   // com.addCommand(cmd2);
   lowerJoint.setup();
   upperJoint.setup();
-  rotation.setup();
-  com.beginSerial();
-
+  //rotation.setup();
+  
+  
 }
 
 void loop() {
-  com.serialListen();
+  //com.serialListen();
+  if (distanceSensor.sense()<5){
+    pickUp();
+    delay(1000);
+    putDown();
+    delay(1000);
+  }
+  
+  if (oneTime){
+    player.setVolume(8);
+    player.play(1);
+    oneTime = false;
+  }
 }
 
 bool pickUp(){

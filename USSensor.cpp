@@ -20,6 +20,9 @@ long USSensor::sense(int maxDist) {
     delayMicroseconds(5);
     digitalWrite(_pinOut, LOW);
     duration = pulseIn(_pin, HIGH, maxDist*58+10);
+    if (duration == 0){
+        return 1000;
+    }
     return microsecondsToCentimeters(duration);
 }
 

@@ -11,7 +11,7 @@
 class USSensor: public Module {
 public:
     USSensor(int pinIn, int pinOut, int echo = 5);
-    long sense(int maxDist = 5);
+    long sense(int maxDist = -1);
 protected:
     int _pinOut;
     int _echo;
