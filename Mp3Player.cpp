@@ -15,6 +15,9 @@ int Mp3Player::getVolume() {
 }
 
 bool Mp3Player::setVolume(int volume) {
+    if (Serial){
+        Serial.println("mp3Player: volume set to "+String(volume));
+    }
     if (volume < 0 || volume > 30){
         return false;
     }
@@ -28,10 +31,16 @@ bool Mp3Player::isPlaying() {
 }
 
 void Mp3Player::play(uint8_t trackNum) {
+    if (Serial){
+        Serial.println("mp3Player: play track num. "+String(trackNum));
+    }
     sendPacket(0x03, trackNum);
 }
 
 void Mp3Player::stop() {
+    if (Serial){
+        Serial.println("mp3Player: stopped playback");
+    }
     sendPacket(0x0E);
 }
 
@@ -79,7 +88,8 @@ void Mp3Player::sendByte(uint8_t val) {
     pinMode(_pin, INPUT);
 }
 
-void Mp3Player::sendPacket(uint8_t cmd, uint16_t param) {
+void Mp3Player::sendPacket(uint8_t cmd, uint16_t param = -1) {
+    Serial.println("packet with cmd: " + String(cmd));
     sendByte(0x7E);
     sendByte(0xFF);
     uint16_t chksm = 0x00;

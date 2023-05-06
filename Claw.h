@@ -12,6 +12,7 @@
 class Claw: public Module{
 public:
     Claw(int pin);
+    void setup();
     void open();
     void close();
 

@@ -5,7 +5,11 @@
 #include "Claw.h"
 
 Claw::Claw(int pin):Module(pin) {
-    _servo.attach(pin);
+
+}
+
+void Claw::setup() {
+    _servo.attach(_pin);
 }
 
 void Claw::open() {
