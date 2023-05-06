@@ -44,6 +44,7 @@ int Arm::rotate(int j, int angle) {
 }
 
 int Arm::moveToXZ(float x, float z) {
+    
     return -1;
 }
 

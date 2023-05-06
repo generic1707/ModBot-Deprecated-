@@ -23,38 +23,66 @@ void Comms::serialListen() {
         return;
     }
     while (Serial.available() == 0) {}
-    String cmd = Serial.readString();
-    Serial.println(cmd);
+    String s = Serial.readString();
+    s.trim();
+    int i = s.indexOf(" ");
+    String cmd = "";
+    String sArg1 = "";
+    String sArg2 = "";
+    if (i == -1){
+        cmd = s;
+    }else{
+        if (i != -1){
+            cmd = s.substring(0,i);
+            cmd.trim();
+            s = s.substring(i);
+            s.trim();
+            i = s.indexOf(" ");
+            if (i == -1){
+                sArg1 = s;
+            } else{
+                sArg1 = s.substring(0,i);
+                sArg1.trim();
+                sArg2 = s.substring(i);
+                sArg2.trim();
+            }
+        }
+    }
+    //Serial.println(cmd);
+    //Serial.println(sArg1);
+    //Serial.println(sArg2);
     int cmdI = findCmd(cmd);
+    //Serial.println(cmdI);
     if (cmdI == -2){
         serialHelp();
     }
     if (cmdI == -1){
-        serialWrite(cmd+" is not a command. 'help' for list of commands.");
+        Serial.println(cmd+" is not a command. 'help' for list of commands.");
     }else{
-        int arg = 0;
-        float arg2 = 0.0;
-        float arg3 = 0.0;
+        int arg = sArg1.toInt();
+        //Serial.println("Command type: "+String(_commands[cmdI].type));
         switch (_commands[cmdI].type){
             case 1:
+                //Serial.println("type 1");
                 _commands[cmdI].cmd1();
                 break;
             case 2:
+                //Serial.println("type 2");
                 _commands[cmdI].cmd2();
                 break;
             case 3:
-                
-                arg = Serial.parseInt();
+                //Serial.println("type 3");
                 _commands[cmdI].cmd3(arg);
                 break;
             case 4:
-                arg = Serial.parseInt();
+                //Serial.println("type 4");
                 _commands[cmdI].cmd4(arg);
                 break;
             case 5:
-                arg2 = Serial.parseFloat();
-                arg3 = Serial.parseFloat();
-                _commands[cmdI].cmd5(arg, arg2);
+                //Serial.println("type 5");
+                float arg2 = sArg1.toFloat();
+                float arg3 = sArg2.toFloat();
+                _commands[cmdI].cmd5(arg2, arg3);
                 break;
         }
     }
@@ -83,12 +111,16 @@ void Comms::setClockFreq(int cf) {
     _clockFreq = cf;
 }
 
-void Comms::addCommand(command cmd) {
+bool Comms::addCommand(command cmd) {
+    if (cmd.name == "" || cmd.type == 0){
+        return false;
+    }
     if (_cmdNum == _maxCommands){
         growArray();
     }
-    _commands[_cmdNum + 1] = cmd;
+    _commands[_cmdNum] = cmd;
     _cmdNum++;
+    return true;
 }
 
 void Comms::growArray() {
@@ -101,18 +133,24 @@ void Comms::growArray() {
 }
 
 void Comms::serialHelp() {
+    Serial.println("List of commands:");
     for (int i = 0; i < _cmdNum; i++){
-        Serial.println(_commands[i].name);
+        Serial.print(_commands[i].name);
+        if (_commands[i].desc != NULL){
+            Serial.println(" - "+_commands[i].desc);
+        }else{
+            Serial.prinln();
+        }
     }
 }
 
 int Comms::findCmd(String cmd) {
-    cmd.trim();
     if (cmd == "help"){
         return -2;
     }
     for (int i = 0; i < _cmdNum; i++){
-        if (cmd.indexOf(_commands[i].name) == 0){
+        //Serial.println(String(i)+" "+_commands[i].name);
+        if (cmd==_commands[i].name){
             return i;
         }
     }

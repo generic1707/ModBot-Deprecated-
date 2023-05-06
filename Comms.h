@@ -10,8 +10,9 @@
 #include <Wire.h>
 
 struct command {
-    String name;
-    int type;
+    String name = "";
+    String desc = "";
+    int type = 0;
     bool (*cmd1)();
     int (*cmd2)();
     bool (*cmd3)(int);
@@ -29,7 +30,7 @@ public:
     void serialWrite(String text);
     void setSampleRate(int sr);
     void setClockFreq(int cf);
-    void addCommand(command cmd);
+    bool addCommand(command cmd);
 
 protected:
     command* _commands;
