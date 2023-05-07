@@ -5,19 +5,23 @@
 #include "Arduino.h"
 #include "Arm.h"
 #include "Module.h"
+#include "Joint.h"
 
-Arm::Arm(int pin1, int pin2, int len1, int len2):Module(0) {
+Arm::Arm(int pin1, int pin2, int pinR, int len1, int len2):Module(0) {
     Joint j1 = Joint(pin1);
     Joint j2 = Joint(pin2);
+    Joint r = Joint(pinR);
     _j1 = &j1;
     _j2 = &j2;
+    _r = &r;
     _len1 = len1;
     _len2 = len2;
 }
 
-Arm::Arm(Joint* j1, Joint* j2, int len1, int len2):Module(0) {
+Arm::Arm(Joint* j1, Joint* j2, Joint* r, int len1, int len2):Module(0) {
     _j1 = j1;
     _j2 = j2;
+    _r = r;
     _len1 = len1;
     _len2 = len2;
 }
@@ -25,9 +29,10 @@ Arm::Arm(Joint* j1, Joint* j2, int len1, int len2):Module(0) {
 void Arm::setup() {
     _j1->setup();
     _j2->setup();
+    _r->setup();
 }
 
-int Arm::rotate(int j, int angle) {
+int Arm::rotate(int joint, int angle) {
     if (j == 1){
         if (!_j1->rotate(angle)){
             return 2;
@@ -43,8 +48,8 @@ int Arm::rotate(int j, int angle) {
     return 1;
 }
 
-int Arm::moveToXZ(float x, float z) {
-    
+int Arm::moveToXYZ(float x, float y, float z) {
+
     return -1;
 }
 

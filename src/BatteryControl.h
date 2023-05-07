@@ -10,8 +10,9 @@
 
 class BatteryControl {
 public:
-    BatteryControl(int pin, float limit);
+    BatteryControl(int analogPin, float limit);
     float batteryLevel();
+    void shutdown();
 protected:
     float limit;
 };

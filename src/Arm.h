@@ -11,15 +11,16 @@
 
 class Arm: public Module{
 public:
-    Arm(int pin1, int pin2, int len1, int len2);
-    Arm(Joint* j1, Joint* j2, int len1, int len2);
+    Arm(int pin1, int pin2, int pinR, int len1, int len2);
+    Arm(Joint* j1, Joint* j2, Joint* r, int len1, int len2);
     void setup();
-    int rotate(int j, int angle);
-    int moveToXZ(float x, float z);
+    int rotate(int joint, int angle);
+    int moveToXYZ(float x, float y, float z);
 
 protected:
     Joint* _j1;
     Joint* _j2;
+    Joint* _r;
     int _len1;
     int _len2;
 };

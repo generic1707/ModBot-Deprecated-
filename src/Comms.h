@@ -17,7 +17,7 @@ struct command {
     int (*cmd2)();
     bool (*cmd3)(int);
     int (*cmd4)(int);
-    int (*cmd5)(float, float);
+    int (*cmd5)(float, float, float);
 };
 
 class Comms: public Module{
