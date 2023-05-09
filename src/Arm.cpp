@@ -33,13 +33,13 @@ void Arm::setup() {
 }
 
 int Arm::rotate(int joint, int angle) {
-    if (j == 1){
+    if (joint == 1){
         if (!_j1->rotate(angle)){
             return 2;
         }
         return 0;
     }
-    if (j == 2){
+    if (joint == 2){
         if (!_j2->rotate(angle)){
             return 2;
         }

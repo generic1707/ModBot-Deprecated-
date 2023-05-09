@@ -22,13 +22,14 @@ void Comms::serialListen() {
     if (!Serial) {
         return;
     }
-    while (Serial.available() == 0) {}
+    if (Serial.available() == 0) return;
     String s = Serial.readString();
     s.trim();
     int i = s.indexOf(" ");
     String cmd = "";
     String sArg1 = "";
     String sArg2 = "";
+    String sArg3 = "";
     if (i == -1){
         cmd = s;
     }else{
@@ -43,8 +44,18 @@ void Comms::serialListen() {
             } else{
                 sArg1 = s.substring(0,i);
                 sArg1.trim();
-                sArg2 = s.substring(i);
-                sArg2.trim();
+                s = s.substring(i);
+                s.trim();
+                i = s.indexOf(" ");
+                if (i == -1){
+                    sArg2 = s;
+                } else{
+                    sArg2 = s.substring(0,i);
+                    sArg2.trim();
+                    sArg3 = s.substring(i);
+                    sArg3.trim();
+                }
+
             }
         }
     }
@@ -80,9 +91,11 @@ void Comms::serialListen() {
                 break;
             case 5:
                 //Serial.println("type 5");
+                if (sArg1 == "" || sArg2 == "" || sArg3 == "") return;
                 float arg2 = sArg1.toFloat();
                 float arg3 = sArg2.toFloat();
-                _commands[cmdI].cmd5(arg2, arg3);
+                float arg4 = sArg3.toFloat();
+                _commands[cmdI].cmd5(arg2, arg3, arg4);
                 break;
         }
     }
@@ -135,11 +148,12 @@ void Comms::growArray() {
 void Comms::serialHelp() {
     Serial.println("List of commands:");
     for (int i = 0; i < _cmdNum; i++){
+        delay(2);
         Serial.print(_commands[i].name);
-        if (_commands[i].desc != NULL){
+        if (_commands[i].desc != ""){
             Serial.println(" - "+_commands[i].desc);
         }else{
-            Serial.prinln();
+            Serial.println();
         }
     }
 }

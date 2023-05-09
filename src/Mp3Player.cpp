@@ -27,7 +27,8 @@ bool Mp3Player::setVolume(int volume) {
 }
 
 bool Mp3Player::isPlaying() {
-    return (bool)digitalRead(_busyPin);
+    Serial.println(String(!digitalRead(_busyPin)));
+    return !(bool)digitalRead(_busyPin);
 }
 
 void Mp3Player::play(uint8_t trackNum) {

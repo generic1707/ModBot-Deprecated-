@@ -10,12 +10,13 @@ Claw::Claw(int pin):Module(pin) {
 
 void Claw::setup() {
     _servo.attach(_pin);
+    close();
 }
 
 void Claw::open() {
-    _servo.write(60);
+    _servo.write(120);
 }
 
 void Claw::close() {
-    _servo.write(90);
+    _servo.write(78);
 }
