@@ -6,6 +6,7 @@
 #include "Arm.h"
 #include "Module.h"
 #include "Joint.h"
+#include <math.h>
 
 Arm::Arm(int pin1, int pin2, int pinR, int len1, int len2):Module(0) {
     Joint j1 = Joint(pin1);
@@ -49,7 +50,6 @@ int Arm::rotate(int joint, int angle) {
 }
 
 int Arm::moveToXYZ(float x, float y, float z) {
-
     return -1;
 }
 

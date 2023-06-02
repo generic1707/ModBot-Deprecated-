@@ -8,6 +8,7 @@
 #include "Arduino.h"
 #include "Module.h"
 #include "Joint.h"
+#include <math.h>
 
 class Arm: public Module{
 public:

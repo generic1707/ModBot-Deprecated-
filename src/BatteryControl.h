@@ -8,13 +8,13 @@
 #include "Arduino.h"
 #include "Module.h"
 
-class BatteryControl {
+class BatteryControl: public Module {
 public:
     BatteryControl(int analogPin, float limit);
     float batteryLevel();
-    void shutdown();
+    bool isUnderLimit();
 protected:
-    float limit;
+    float _limit;
 };
 
 

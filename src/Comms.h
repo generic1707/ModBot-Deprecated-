@@ -24,9 +24,8 @@ class Comms: public Module{
 public:
     Comms(int sampleRate = 9600, int clocFreq = 100000, int maxCommands = 2);
     void beginSerial();
+    void beginWire(int address);
     void serialListen();
-    void i2cListen();
-    void i2cWrite(uint8_t byte);
     void serialWrite(String text);
     void setSampleRate(int sr);
     void setClockFreq(int cf);
@@ -42,6 +41,7 @@ private:
     void growArray();
     int findCmd(String cmd);
     void serialHelp();
+    void receiveEvent();
     int _maxCommands;
 };
 

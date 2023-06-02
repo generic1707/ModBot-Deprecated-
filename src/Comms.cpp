@@ -18,6 +18,11 @@ void Comms::beginSerial() {
     Serial.begin(_sampleRate);
 }
 
+void Comms::beginWire(int address) {
+    Wire.begin(address);
+    Wire.onReceive(receiveEvent);
+}
+
 void Comms::serialListen() {
     if (!Serial) {
         return;
@@ -105,14 +110,6 @@ void Comms::serialWrite(String text) {
     Serial.println(text);
 }
 
-void Comms::i2cListen() {
-
-}
-
-void Comms::i2cWrite(uint8_t byte) {
-
-}
-
 void Comms::setSampleRate(int sr) {
     Serial.end();
     Serial.begin(sr);
@@ -154,6 +151,89 @@ void Comms::serialHelp() {
             Serial.println(" - "+_commands[i].desc);
         }else{
             Serial.println();
+        }
+    }
+}
+
+void Comms::receiveEvent() {
+    String s = "";
+    while(0 < Wire.available()){
+        char c = Wire.read();
+        s = s+c;
+    }
+    s.trim();
+    int i = s.indexOf(" ");
+    String cmd = "";
+    String sArg1 = "";
+    String sArg2 = "";
+    String sArg3 = "";
+    if (i == -1){
+        cmd = s;
+    }else{
+        if (i != -1){
+            cmd = s.substring(0,i);
+            cmd.trim();
+            s = s.substring(i);
+            s.trim();
+            i = s.indexOf(" ");
+            if (i == -1){
+                sArg1 = s;
+            } else{
+                sArg1 = s.substring(0,i);
+                sArg1.trim();
+                s = s.substring(i);
+                s.trim();
+                i = s.indexOf(" ");
+                if (i == -1){
+                    sArg2 = s;
+                } else{
+                    sArg2 = s.substring(0,i);
+                    sArg2.trim();
+                    sArg3 = s.substring(i);
+                    sArg3.trim();
+                }
+
+            }
+        }
+    }
+    //Serial.println(cmd);
+    //Serial.println(sArg1);
+    //Serial.println(sArg2);
+    int cmdI = findCmd(cmd);
+    //Serial.println(cmdI);
+    if (cmdI == -2){
+        serialHelp();
+    }
+    if (cmdI == -1){
+        Serial.println(cmd+" is not a command. 'help' for list of commands.");
+    }else{
+        int arg = sArg1.toInt();
+        //Serial.println("Command type: "+String(_commands[cmdI].type));
+        switch (_commands[cmdI].type){
+            case 1:
+                //Serial.println("type 1");
+                _commands[cmdI].cmd1();
+                break;
+            case 2:
+                //Serial.println("type 2");
+                _commands[cmdI].cmd2();
+                break;
+            case 3:
+                //Serial.println("type 3");
+                _commands[cmdI].cmd3(arg);
+                break;
+            case 4:
+                //Serial.println("type 4");
+                _commands[cmdI].cmd4(arg);
+                break;
+            case 5:
+                //Serial.println("type 5");
+                if (sArg1 == "" || sArg2 == "" || sArg3 == "") return;
+                float arg2 = sArg1.toFloat();
+                float arg3 = sArg2.toFloat();
+                float arg4 = sArg3.toFloat();
+                _commands[cmdI].cmd5(arg2, arg3, arg4);
+                break;
         }
     }
 }
