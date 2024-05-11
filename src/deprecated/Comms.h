@@ -10,30 +10,29 @@
 #include <Wire.h>
 
 struct command {
-    String name = "";
-    String desc = "";
-    int type = 0;
+    String name;
+    String desc;
+    int type;
     bool (*cmd1)();
     int (*cmd2)();
     bool (*cmd3)(int);
     int (*cmd4)(int);
-    int (*cmd5)(float, float, float);
+    int (*cmd5)(float, float);
 };
 
 class Comms: public Module{
 public:
     Comms(int sampleRate = 9600, int clocFreq = 100000, int maxCommands = 2);
     void beginSerial();
-    void beginWire(int address);
     void serialListen();
+    void i2cListen();
+    void i2cWrite(uint8_t byte);
     void serialWrite(String text);
     void setSampleRate(int sr);
     void setClockFreq(int cf);
-    bool addCommand(command cmd);
+    void addCommand(command cmd);
 
 protected:
-    //TODO later
-    // mozno prepisat aby pouzivalo <vector> namiesto array
     command* _commands;
     int _cmdNum;
     int _sampleRate;
@@ -43,7 +42,6 @@ private:
     void growArray();
     int findCmd(String cmd);
     void serialHelp();
-    void receiveEvent();
     int _maxCommands;
 };
 

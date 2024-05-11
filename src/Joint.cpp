@@ -5,46 +5,53 @@
 #include "Joint.h"
 
 
-Joint::Joint(int pin, int defAngle, int limitUp, int limitDown): Module(pin) {
-    _angle = defAngle;
-    _defAngle = defAngle;
-    _limitUp = limitUp;
-    _limitDown = limitDown;
+Joint::Joint(int pin, int type, int defAngle, int limitUp, int limitDown): Module(pin, type) {
+    _angle = map(defAngle,0,180,500,2500);
+    _defAngle = map(defAngle,0,180,500,2500);
+    _limitUp = map(limitUp,0,180,500,2500);
+    _limitDown = map(limitDown,0,180,500,2500);
+}
+
+Joint::Joint():Module(0,0) {
+    _angle = 0;
+    _defAngle = 0;
+    _limitUp = 0;
+    _limitDown = 0;
 }
 
 void Joint::setup() {
     _servo.attach(_pin);
-    _servo.write(_defAngle);
+    _servo.writeMicroseconds(_defAngle);
 }
 
 bool Joint::rotate(int angle) {
-    if (angle > _limitUp || angle < _limitDown){
+    if (map(angle,0,180,500,2500) > _limitUp || map(angle,0,180,500,2500) < _limitDown){
         return false;
     }
-    _servo.write(angle);
+    _servo.writeMicroseconds(map(angle,0,180,500,2500));
     return true;
 }
 
 void Joint::setDefAngle(int angle) {
-    _defAngle = angle;
+    _defAngle = map(angle,0,180,500,2500);
 }
 
 bool Joint::setLimitDown(int limit) {
-    if (limit < 0 || limit > _limitUp){
+    if (map(limit,0,180,500,2500) < 0 || map(limit,0,180,500,2500) > _limitUp){
         return false;
     }
-    _limitUp = limit;
+    _limitUp = map(limit,0,180,500,2500);
     return true;
 }
 
 bool Joint::setLimitUp(int limit) {
-    if (limit > 180 || limit < _limitDown){
+    if (map(limit,0,180,500,2500) > 180 || map(limit,0,180,500,2500) < _limitDown){
         return false;
     }
-    _limitUp = limit;
+    _limitUp = map(limit,0,180,500,2500);
     return true;
 }
 
 int Joint::getAngle() {
-    return _angle;
+    return map(_angle,500,2500,0,180);
 }

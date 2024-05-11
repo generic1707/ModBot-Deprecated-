@@ -11,8 +11,7 @@
 
 class Joint: public Module{
 public:
-    Joint(int pin, int type, int defAngle = 90, int limitUp = 180, int limitDown = 0);
-    Joint();
+    Joint(int pin, int defAngle = 90, int limitUp = 180, int limitDown = 0);
     void setup();
     bool rotate(int angle);
     void setDefAngle(int angle);
